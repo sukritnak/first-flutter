@@ -123,6 +123,34 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white70,
                   ),
                 ),
+                GestureDetector(
+                  onTap: () async {
+                    // fromAbout = await Navigator.pushNamed(context, '/about',
+                    fromAbout =
+                        await Navigator.pushNamed(context, 'homestack/room');
+
+                    setState(() {
+                      fromAbout = fromAbout['text'];
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.person,
+                          size: 50,
+                          color: Colors.cyan[700],
+                        ),
+                        Text('ห้องพัก',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20))
+                      ],
+                    ),
+                    color: Colors.white70,
+                  ),
+                ),
               ],
             )));
   }

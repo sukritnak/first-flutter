@@ -29,6 +29,9 @@ class _DetailPageState extends State<DetailPage> {
         isLoading = false;
       });
     } else {
+      setState(() {
+        isLoading = false;
+      });
       print('Request failed with status: ${response.statusCode}.');
     }
   }

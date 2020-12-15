@@ -1,6 +1,4 @@
-// import 'package:firstFlutter/models/product.dart';
-
-// ลองใช้ แบบไม่มี model dynamic
+import 'package:firstFlutter/models/product.dart';
 
 import 'package:firstFlutter/widgets/menu.dart';
 import 'package:flutter/material.dart';
@@ -16,16 +14,18 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  List<dynamic> course = [];
+  List<Course> course = [];
   bool isLoading = true;
 
   _getData() async {
     var url = 'https://api.codingthailand.com/api/course';
     var response = await http.get(url);
     if (response.statusCode == 200) {
-      final Map<String, dynamic> product = convert.jsonDecode(response.body);
+      var jsonResponse = convert.jsonDecode(response.body);
+      final Product product = Product.fromJson(jsonResponse);
+      // course = product.course; // เขียนแบบนี้มันได้แค่รอบเดียว
       setState(() {
-        course = product['data'];
+        course = product.course;
         isLoading = false;
       });
     } else {
@@ -38,7 +38,6 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   void initState() {
-    print('product no model');
     super.initState();
     _getData();
   }
@@ -58,14 +57,14 @@ class _ProductPageState extends State<ProductPage> {
             : ListView.separated(
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
-                    title: Text(course[index]['title']),
-                    subtitle: Text(course[index]['detail']),
+                    title: Text(course[index].title),
+                    subtitle: Text(course[index].detail),
                     trailing: Icon(Icons.arrow_right),
                     onTap: () {
                       Navigator.pushNamed(context, 'productstack/detail',
                           arguments: {
-                            'id': course[index]['id'],
-                            'title': course[index]['title']
+                            'id': course[index].id,
+                            'title': course[index].title
                           });
                     },
                     leading: Container(
@@ -74,7 +73,7 @@ class _ProductPageState extends State<ProductPage> {
                       decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                           image: DecorationImage(
-                              image: NetworkImage(course[index]['picture']))),
+                              image: NetworkImage(course[index].picture))),
                     ),
                   );
                 },
