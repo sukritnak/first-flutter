@@ -1,6 +1,4 @@
-import 'package:firstFlutter/pages/DetailPage.dart';
 import 'package:firstFlutter/pages/NewsPage.dart';
-import 'package:firstFlutter/pages/ProductPage.dart';
 import 'package:firstFlutter/pages/WebViewPage.dart';
 import 'package:flutter/material.dart';
 
