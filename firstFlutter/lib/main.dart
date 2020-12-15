@@ -1,4 +1,5 @@
 import 'package:firstFlutter/pages/HomeStack.dart';
+import 'package:firstFlutter/pages/NewsStack.dart';
 import 'package:firstFlutter/pages/ProductStack.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/': (context) => HomeStack(),
         '/productstack': (context) => ProductStack(),
+        '/newsstack': (context) => NewsStack(),
       },
       // routes: <String, WidgetBuilder>{
       //   '/': (context) => HomePage(),
