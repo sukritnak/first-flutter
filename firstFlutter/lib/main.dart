@@ -1,6 +1,6 @@
-import 'package:firstFlutter/pages/HomeStack.dart';
-import 'package:firstFlutter/pages/NewsStack.dart';
-import 'package:firstFlutter/pages/ProductStack.dart';
+import 'package:firstFlutter/pages/stacks/HomeStack.dart';
+import 'package:firstFlutter/pages/stacks/NewsStack.dart';
+import 'package:firstFlutter/pages/stacks/ProductStack.dart';
 import 'package:flutter/material.dart';
 
 void main() {
