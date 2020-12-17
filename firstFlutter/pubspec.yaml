@@ -32,6 +32,8 @@ dependencies:
   intl: ^0.16.1
   webview_flutter: ^1.0.7
   pull_to_refresh: ^1.6.3
+  flushbar: ^1.10.4
+  flutter_form_builder: ^4.0.2
 
 dev_dependencies:
   flutter_test:
