@@ -1,10 +1,17 @@
 import 'package:firstFlutter/pages/LoginPage.dart';
-// import 'package:firstFlutter/pages/stacks/HomeStack.dart';
+import 'package:firstFlutter/pages/RegisterPage.dart';
+import 'package:firstFlutter/pages/stacks/HomeStack.dart';
 import 'package:firstFlutter/pages/stacks/NewsStack.dart';
 import 'package:firstFlutter/pages/stacks/ProductStack.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+String token;
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  token = prefs.getString('token');
   runApp(MyApp());
 }
 
@@ -27,7 +34,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
         // '/': (context) => HomeStack(),
-        '/': (context) => LoginPage(),
+        '/': (context) => token == null ? LoginPage(): HomeStack(),
+        // '/': (context) => LoginPage(),
+        '/register': (context) => RegisterPage(),
+        '/login': (context) => LoginPage(),
+        '/homestack': (context) => HomeStack(),
         '/productstack': (context) => ProductStack(),
         '/newsstack': (context) => NewsStack(),
       },

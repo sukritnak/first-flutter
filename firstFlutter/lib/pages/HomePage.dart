@@ -1,6 +1,7 @@
 import 'package:firstFlutter/widgets/logo.dart';
 import 'package:firstFlutter/widgets/menu.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -17,6 +18,14 @@ class _HomePageState extends State<HomePage> {
   //     _counter++;
   //   });
   // }
+  _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    await prefs.remove('profile');
+
+    Navigator.of(context, rootNavigator: true)
+        .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +37,14 @@ class _HomePageState extends State<HomePage> {
           // title: Logo(), // ถ้าเราใส่แบบนี้ มันจะ build โลโก้ทุกรอบเปลือง performance
           title:
               const Logo(), // ถ้าใส่ const จะไม่ให้ rebuild ซ้ำ ในการ set State class นี้
+          actions: [
+            IconButton(
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () {
+                _logout();
+              },
+            )
+          ],
         ),
         drawer: Menu(),
         body: Container(

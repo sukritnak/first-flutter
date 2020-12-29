@@ -55,7 +55,7 @@ class _Companytate extends State<CompanyPage> {
                         Wrap(
                             spacing: 20,
                             children: List.generate(
-                              7,
+                              9,
                               (int index) => Chip(
                                 label: Text('Text ${index + 1}'),
                                 avatar: Icon(Icons.star),

@@ -1,59 +1,57 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
-import 'package:flushbar/flushbar.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _fbKey = GlobalKey<FormBuilderState>();
   bool isLoading = false;
-  SharedPreferences prefs;
 
-  _initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _initPrefs();
-  }
-
-  _login(Map<String, dynamic> values) async {
+  _register(Map<String, dynamic> values) async {
     setState(() {
       isLoading = true;
     });
 
-    var url = 'https://api.codingthailand.com/api/login';
+    var url = 'https://api.codingthailand.com/api/register';
     var response = await http.post(url,
         headers: {'Content-Type': 'application/json'},
         body: convert.jsonEncode({
+          'name': values['name'],
           'email': values['email'],
           'password': values['password'],
+          'dob': values['dob'].toString().substring(0, 10),
         }));
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       setState(() {
         isLoading = false;
       });
-      // var token = convert.jsonDecode(response.body);
-      // print(response.body);
-      // save token to prefs
-      await prefs.setString('token', response.body);
-      //get profile
-      await _getProfile();
-      // go to home
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/homestack', (Route<dynamic> route) => false);
+      var data = convert.jsonDecode(response.body);
+      Flushbar(
+        title: '${data['message']}',
+        message: "สามารถล๊อคอินได้ทันที",
+        icon: Icon(
+          Icons.info_outline,
+          size: 28.0,
+          color: Colors.blue[300],
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+      )..show(context);
+
+      // back pop login
+      Future.delayed(Duration(seconds: 3), () {
+        Navigator.pop(context);
+      });
     } else {
       setState(() {
         isLoading = false;
@@ -62,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
       var data = convert.jsonDecode(response.body);
       Flushbar(
         title: '${data['message']}',
-        message: 'เกิดข้อผิดพลาด ${data['status_code']}',
+        message: '${data['errors']['email'][0]}',
         backgroundColor: Colors.redAccent,
         icon: Icon(
           Icons.error,
@@ -75,31 +73,14 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _getProfile() async {
-    // get token from pref
-
-    var tokenString = prefs.getString('token');
-    var token = convert.jsonDecode(tokenString);
-
-    print(token['access_token']);
-
-    // http to url profile
-    var url = 'https://api.codingthailand.com/api/profile';
-    var res = await http.get(
-      url,
-      headers: {'Authorization': 'Bearer ${token['access_token']}'},
-    );
-
-    // print('profile ${res.body}');
-
-    var profile = convert.jsonDecode(res.body);
-    await prefs.setString('profile', convert.jsonEncode(profile['data']['user']));
-    // save user profile to pref
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('ลงทะเบียน'),
+        centerTitle: false,
+        // automaticallyImplyLeading: false,
+      ),
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -112,21 +93,41 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
             child: SingleChildScrollView(
           child: Column(children: [
-            Image(
-              image: AssetImage('assets/images/fish-logo.png'),
-              height: 90,
-            ),
             Padding(
               padding: EdgeInsets.all(30),
               child: FormBuilder(
                 key: _fbKey,
                 initialValue: {
+                  'name': '',
                   'email': '',
                   'password': '',
+                  // 'dob': DateTime.now(),
                 },
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   children: <Widget>[
+                    FormBuilderTextField(
+                      name: 'name',
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                        labelText: 'ชื่อ-สกุล',
+                        labelStyle: TextStyle(color: Colors.black54),
+                        errorStyle: TextStyle(color: Colors.red[300]),
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        fillColor: Colors.white60,
+                      ),
+                      // onChanged: _onChanged,
+                      // valueTransformer: (text) => num.tryParse(text),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(context,
+                            errorText: 'ป้อนข้อมูล ชื่อ-สกุล ด้วย'),
+                      ]),
+                      keyboardType: TextInputType.text,
+                    ),
+                    SizedBox(height: 20),
                     FormBuilderTextField(
                       name: 'email',
                       maxLines: 1,
@@ -177,18 +178,42 @@ class _LoginPageState extends State<LoginPage> {
                       keyboardType: TextInputType.visiblePassword,
                     ),
                     SizedBox(height: 20),
+                    FormBuilderDateTimePicker(
+                      name: 'dob',
+                      inputType: InputType.date,
+                      format: DateFormat('yyyy-MM-dd'),
+                      // onChanged: _onChanged,
+                      decoration: InputDecoration(
+                        labelText: 'วันเดือนปีเกิด',
+                        labelStyle: TextStyle(color: Colors.black54),
+                        errorStyle: TextStyle(color: Colors.red[300]),
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        fillColor: Colors.white60,
+                      ),
+                    ),
+                    SizedBox(height: 20),
                     SizedBox(
                         width: 200,
                         child: RaisedButton(
                           onPressed: () {
                             if (_fbKey.currentState.saveAndValidate()) {
                               // print(_fbKey.currentState.value);
-                              _login(_fbKey.currentState.value);
+                              _register(_fbKey.currentState.value);
                             }
                           },
-                          child: Text(
-                            'Login',
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center ,
+                            children: [
+                              isLoading == true
+                                  ? CircularProgressIndicator()
+                                  : Text(''),
+                              Text('ลงทะเบียน',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white))
+                            ],
                           ),
                           padding: EdgeInsets.all(20),
                           color: Colors.cyan[900],
@@ -196,28 +221,6 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(20)),
                         )),
                     SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                            child: MaterialButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/register');
-                                },
-                                child: Text('ลงทะเบียน',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        decoration:
-                                            TextDecoration.underline)))),
-                        Expanded(
-                            child: MaterialButton(
-                                onPressed: () {},
-                                child: Text('ลืมรหัสผ่าน',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        decoration: TextDecoration.underline))))
-                      ],
-                    )
                   ],
                 ),
               ),

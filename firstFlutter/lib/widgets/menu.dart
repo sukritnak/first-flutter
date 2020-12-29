@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
 
 class Menu extends StatefulWidget {
   Menu({Key key}) : super(key: key);
@@ -8,6 +10,24 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
+  Map<String, dynamic> profile = {'email': '', 'name': '', 'role': ''};
+
+  _getProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var profileString = prefs.getString('profile');
+    if (profileString != null) {
+      setState(() {
+        profile = convert.jsonDecode(profileString);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,18 +36,35 @@ class _MenuState extends State<Menu> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text(
-                  'เมนูหลัก',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
+              // DrawerHeader(
+              //   decoration: BoxDecoration(
+              //     color: Colors.blue,
+              //   ),
+              //   child: Text(
+              //     'เมนูหลัก',
+              //     style: TextStyle(
+              //       color: Colors.white,
+              //       fontSize: 24,
+              //     ),
+              //   ),
+              // ),
+              // mock picture
+              UserAccountsDrawerHeader(
+                accountName: Text('${profile['name']}'),
+                accountEmail:
+                    Text('${profile['email']} role: ${profile['role']} '),
+                currentAccountPicture: CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/fish.jpg')),
+                otherAccountsPictures: [
+                  IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'homestack/editprofile',
+                            arguments: {'name': profile['name']});
+                      })
+                ],
               ),
+
               ListTile(
                 leading: Icon(Icons.home),
                 title: Text('หน้าหลัก'),
@@ -39,7 +76,7 @@ class _MenuState extends State<Menu> {
                 onTap: () {
                   Navigator.of(context, rootNavigator: true)
                       .pushNamedAndRemoveUntil(
-                          '/', (Route<dynamic> route) => false);
+                          '/homestack', (Route<dynamic> route) => false);
                 },
               ),
               ListTile(

@@ -1,6 +1,7 @@
 import 'package:firstFlutter/pages/AboutPage.dart';
 import 'package:firstFlutter/pages/CompanyPage.dart';
 import 'package:firstFlutter/pages/ContactPage.dart';
+import 'package:firstFlutter/pages/EditProfilePage.dart';
 import 'package:firstFlutter/pages/HomePage.dart';
 import 'package:firstFlutter/pages/RoomPage.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,9 @@ class _HomeStackState extends State<HomeStack> {
             break;
           case 'homestack/room':
             builder = (BuildContext _) => RoomPage();
+            break;
+          case 'homestack/editprofile':
+            builder = (BuildContext _) => EditProfilePage();
             break;
           default:
             throw Exception('Invalid route: ${settings.name}');

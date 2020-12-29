@@ -28,11 +28,11 @@ class NewsPageState extends State<NewsPage> {
   void _onRefresh() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
-    _getData();
     setState(() {
       articles.clear();
       page = 1;
     });
+    _getData();
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
