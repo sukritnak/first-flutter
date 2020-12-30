@@ -42,7 +42,9 @@ class _MenuState extends State<Menu> {
             children: <Widget>[
               // mock picture
               StoreConnector<AppState, Map<String, dynamic>>(
-                  distinct: true, // distinct ถ้าเป็นค่าเดิมจะไม่ดึง
+                  distinct:
+                      true, // distinct ถ้าเป็นค่าเดิมจะไม่ดึง ต้องไป implement [==] [hashcode] เพิ่ม
+                  // ในที่นี้จะลง lib [equatable]
                   builder: (context, profile) {
                     return UserAccountsDrawerHeader(
                       accountName: Text('${profile['name']}'),

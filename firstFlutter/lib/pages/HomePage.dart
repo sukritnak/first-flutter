@@ -1,4 +1,5 @@
 import 'package:firstFlutter/redux/appReducer.dart';
+import 'package:firstFlutter/redux/profile/profileReducer.dart';
 import 'package:firstFlutter/widgets/logo.dart';
 import 'package:firstFlutter/widgets/menu.dart';
 import 'package:flutter/material.dart';
@@ -55,15 +56,25 @@ class _HomePageState extends State<HomePage> {
                     image: AssetImage('assets/images/bg-blue.png'),
                     fit: BoxFit.cover)),
             child: Column(children: [
-              StoreConnector<AppState, Map<String, dynamic>>(
-                  distinct: true, // distinct ถ้าเป็นค่าเดิมจะไม่ดึง
-                  builder: (context, profile) {
+              StoreConnector<AppState, ProfileState>(
+                  // เผื่ออนาคต profileState มีอย่างอื่น นอกจาก profile
+                  // StoreConnector<AppState, Map<String, dynamic>>(
+                  distinct:
+                      true, // distinct ถ้าเป็นค่าเดิมจะไม่ดึง ต้องไป implement [==] [hashcode] เพิ่ม
+                  // ในที่นี้จะลง lib [equatable]
+                  builder: (context, profileState) {
+                  // builder: (context, profile) {
                     return Expanded(
                       flex: 1,
-                      child: Center(child: Text('Welcome ${profile['name']} Email: ${profile['email']}')),
+                      child: Center(
+                          child: Text(
+                              'Welcome ${profileState.profile['name']} Email: ${profileState.profile['email']}')),
+                              // 'Welcome ${profile['name']} Email: ${profile['email']}')),
                     );
                   },
-                  converter: (store) => store.state.profileState.profile),
+                  // เผื่ออนาคต profileState มีอย่างอื่น นอกจาก profile
+                  converter: (store) => store.state.profileState),
+              // converter: (store) => store.state.profileState.profile),
               Expanded(
                   flex: 8,
                   child: GridView.count(
