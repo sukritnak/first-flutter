@@ -1,5 +1,8 @@
+import 'package:firstFlutter/redux/appReducer.dart';
+import 'package:firstFlutter/redux/profile/profileAction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:intl/intl.dart';
 import 'dart:convert' as convert;
@@ -93,8 +96,13 @@ class _LoginPageState extends State<LoginPage> {
     // print('profile ${res.body}');
 
     var profile = convert.jsonDecode(res.body);
-    await prefs.setString('profile', convert.jsonEncode(profile['data']['user']));
     // save user profile to pref
+    await prefs.setString('profile', convert.jsonEncode(profile['data']['user']));
+
+
+    // call action set redux
+    final store = StoreProvider.of<AppState>(context);
+    store.dispatch(getProfileAction(profile['data']['user']));
   }
 
   @override

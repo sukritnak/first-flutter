@@ -1,5 +1,8 @@
+import 'package:firstFlutter/redux/appReducer.dart';
+import 'package:firstFlutter/redux/profile/profileAction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:flushbar/flushbar.dart';
@@ -22,7 +25,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     _initPrefs();
   }
@@ -81,6 +84,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
     var profileUpdate = convert.jsonDecode(pf);
     await prefs.setString(
         'profile', convert.jsonEncode(profileUpdate['data']['user']));
+
+    // call action set redux
+    final store = StoreProvider.of<AppState>(context);
+    store.dispatch(getProfileAction(profileUpdate['data']['user']));
   }
 
   @override
@@ -134,7 +141,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             }
                           },
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center ,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text('แก้ไข',
                                   style: TextStyle(

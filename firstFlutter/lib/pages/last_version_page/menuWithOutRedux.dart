@@ -1,8 +1,6 @@
-import 'package:firstFlutter/redux/appReducer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'dart:convert' as convert;
+import 'dart:convert' as convert;
 
 class Menu extends StatefulWidget {
   Menu({Key key}) : super(key: key);
@@ -12,17 +10,15 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  // เปลี่ยนไปใช้ state
-  // Map<String, dynamic> profile = {'email': '', 'name': '', 'role': ''};
+  Map<String, dynamic> profile = {'email': '', 'name': '', 'role': ''};
 
   _getProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var profileString = prefs.getString('profile');
     if (profileString != null) {
-      // เปลี่ยนไปใช้ state
-      // setState(() {
-      //   profile = convert.jsonDecode(profileString);
-      // });
+      setState(() {
+        profile = convert.jsonDecode(profileString);
+      });
     }
   }
 
@@ -40,29 +36,34 @@ class _MenuState extends State<Menu> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
+              // DrawerHeader(
+              //   decoration: BoxDecoration(
+              //     color: Colors.blue,
+              //   ),
+              //   child: Text(
+              //     'เมนูหลัก',
+              //     style: TextStyle(
+              //       color: Colors.white,
+              //       fontSize: 24,
+              //     ),
+              //   ),
+              // ),
               // mock picture
-              StoreConnector<AppState, Map<String, dynamic>>(
-                  distinct: true, // distinct ถ้าเป็นค่าเดิมจะไม่ดึง
-                  builder: (context, profile) {
-                    return UserAccountsDrawerHeader(
-                      accountName: Text('${profile['name']}'),
-                      accountEmail:
-                          Text('${profile['email']} role: ${profile['role']} '),
-                      currentAccountPicture: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/images/fish.jpg')),
-                      otherAccountsPictures: [
-                        IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, 'homestack/editprofile',
-                                  arguments: {'name': profile['name']});
-                            })
-                      ],
-                    );
-                  },
-                  converter: (store) => store.state.profileState.profile),
+              UserAccountsDrawerHeader(
+                accountName: Text('${profile['name']}'),
+                accountEmail:
+                    Text('${profile['email']} role: ${profile['role']} '),
+                currentAccountPicture: CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/fish.jpg')),
+                otherAccountsPictures: [
+                  IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'homestack/editprofile',
+                            arguments: {'name': profile['name']});
+                      })
+                ],
+              ),
 
               ListTile(
                 leading: Icon(Icons.home),
