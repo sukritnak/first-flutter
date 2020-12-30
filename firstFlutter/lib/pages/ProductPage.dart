@@ -1,12 +1,12 @@
 // import 'package:firstFlutter/models/product.dart';
-
 // ลองใช้ แบบไม่มี model dynamic
 
+import 'package:firstFlutter/redux/appReducer.dart';
+import 'package:firstFlutter/redux/product/productAction.dart';
+import 'package:firstFlutter/redux/product/productReducer.dart';
 import 'package:firstFlutter/widgets/menu.dart';
 import 'package:flutter/material.dart';
-
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
+import 'package:flutter_redux/flutter_redux.dart';
 
 class ProductPage extends StatefulWidget {
   ProductPage({Key key}) : super(key: key);
@@ -16,31 +16,22 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  List<dynamic> course = [];
-  bool isLoading = true;
-
   _getData() async {
-    var url = 'https://api.codingthailand.com/api/course';
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> product = convert.jsonDecode(response.body);
-      setState(() {
-        course = product['data'];
-        isLoading = false;
-      });
-    } else {
-      setState(() {
-        isLoading = false;
-      });
-      print('Request failed with status: ${response.statusCode}.');
-    }
+    final store = StoreProvider.of<AppState>(context);
+    store.dispatch(getProductAction(store));
   }
 
   @override
   void initState() {
     print('product no model');
     super.initState();
-    _getData();
+
+    Future.delayed(Duration.zero, () {
+      _getData();
+    });
+
+    // พอใช้เป็น store มันเป็น async ต้องให้ build ก่อนค่อยมาเรียก โดยใช้ Future.delayed zero
+    // _getData();
   }
 
   @override
@@ -51,35 +42,41 @@ class _ProductPageState extends State<ProductPage> {
           title: Text('สินค้า'),
         ),
         drawer: Menu(),
-        body: isLoading == true
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView.separated(
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(course[index]['title']),
-                    subtitle: Text(course[index]['detail']),
-                    trailing: Icon(Icons.arrow_right),
-                    onTap: () {
-                      Navigator.pushNamed(context, 'productstack/detail',
-                          arguments: {
-                            'id': course[index]['id'],
-                            'title': course[index]['title']
-                          });
-                    },
-                    leading: Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                              image: NetworkImage(course[index]['picture']))),
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    Divider(),
-                itemCount: course.length));
+        body: StoreConnector<AppState, ProductState>(
+            distinct: true,
+            builder: (context, productState) {
+              return productState.isLoading == true
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.separated(
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          title: Text(productState.course[index]['title']),
+                          subtitle: Text(productState.course[index]['detail']),
+                          trailing: Icon(Icons.arrow_right),
+                          onTap: () {
+                            Navigator.pushNamed(context, 'productstack/detail',
+                                arguments: {
+                                  'id': productState.course[index]['id'],
+                                  'title': productState.course[index]['title']
+                                });
+                          },
+                          leading: Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                    image: NetworkImage(productState
+                                        .course[index]['picture']))),
+                          ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(),
+                      itemCount: productState.course.length);
+            },
+            converter: (store) => store.state.productState));
   }
 }

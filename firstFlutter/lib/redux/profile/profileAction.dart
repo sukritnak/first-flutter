@@ -11,6 +11,7 @@ class GetProfileAction {
 //action
 
 getProfileAction(Map profile) {
+  // ถ้าจะใช้ async await ที่ action ต้องลง redux thunk
   //logic => insert update delete
 
   return GetProfileAction(ProfileState(profile: profile));

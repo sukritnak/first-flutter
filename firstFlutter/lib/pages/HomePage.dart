@@ -63,13 +63,13 @@ class _HomePageState extends State<HomePage> {
                       true, // distinct ถ้าเป็นค่าเดิมจะไม่ดึง ต้องไป implement [==] [hashcode] เพิ่ม
                   // ในที่นี้จะลง lib [equatable]
                   builder: (context, profileState) {
-                  // builder: (context, profile) {
+                    // builder: (context, profile) {
                     return Expanded(
                       flex: 1,
                       child: Center(
                           child: Text(
                               'Welcome ${profileState.profile['name']} Email: ${profileState.profile['email']}')),
-                              // 'Welcome ${profile['name']} Email: ${profile['email']}')),
+                      // 'Welcome ${profile['name']} Email: ${profile['email']}')),
                     );
                   },
                   // เผื่ออนาคต profileState มีอย่างอื่น นอกจาก profile
@@ -187,6 +187,31 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.cyan[700],
                               ),
                               Text('ห้องพัก',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 20))
+                            ],
+                          ),
+                          color: Colors.white70,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+
+                          // เขียนอีกถ้าเพราะตอนนี้เราอยู่ใน Homestack ต้องไปที่ root
+                          Navigator.of(context, rootNavigator: true).pushNamed('/customer');
+
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.group,
+                                size: 50,
+                                color: Colors.cyan[700],
+                              ),
+                              Text('ลูกค้า',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: 20))
                             ],
