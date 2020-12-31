@@ -118,21 +118,26 @@ class _HomePageState extends State<HomePage> {
                         ),
                         color: Colors.white70,
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.camera_alt,
-                              size: 50,
-                              color: Colors.cyan[700],
+                      GestureDetector(
+                          onTap: () async {
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed('/camerastack');
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.camera_alt,
+                                  size: 50,
+                                  color: Colors.cyan[700],
+                                ),
+                                Text('กล้อง', style: TextStyle(fontSize: 20))
+                              ],
                             ),
-                            Text('กล้อง', style: TextStyle(fontSize: 20))
-                          ],
-                        ),
-                        color: Colors.white70,
-                      ),
+                            color: Colors.white70,
+                          )),
                       GestureDetector(
                         onTap: () async {
                           // fromAbout = await Navigator.pushNamed(context, '/about',
@@ -196,10 +201,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-
                           // เขียนอีกถ้าเพราะตอนนี้เราอยู่ใน Homestack ต้องไปที่ root
-                          Navigator.of(context, rootNavigator: true).pushNamed('/customer');
-
+                          Navigator.of(context, rootNavigator: true)
+                              .pushNamed('/customer');
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8),

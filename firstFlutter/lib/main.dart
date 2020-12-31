@@ -1,6 +1,7 @@
 import 'package:firstFlutter/pages/CustomerPage.dart';
 import 'package:firstFlutter/pages/LoginPage.dart';
 import 'package:firstFlutter/pages/RegisterPage.dart';
+import 'package:firstFlutter/pages/stacks/CameraStack.dart';
 import 'package:firstFlutter/pages/stacks/HomeStack.dart';
 import 'package:firstFlutter/pages/stacks/NewsStack.dart';
 import 'package:firstFlutter/pages/stacks/ProductStack.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
             '/productstack': (context) => ProductStack(),
             '/newsstack': (context) => NewsStack(),
             '/customer': (context) => CustomerPage(),
+            '/camerastack': (context) => CameraStack(),
           },
           // routes: <String, WidgetBuilder>{
           //   '/': (context) => HomePage(),
