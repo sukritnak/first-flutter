@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Icon(
-                                Icons.person,
+                                Icons.room_service_outlined,
                                 size: 50,
                                 color: Colors.cyan[700],
                               ),

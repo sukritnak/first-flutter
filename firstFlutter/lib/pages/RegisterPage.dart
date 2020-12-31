@@ -210,7 +210,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               isLoading == true
                                   ? CircularProgressIndicator()
                                   : Text(''),
-                              Text('ลงทะเบียน',
+                            Text('ลงทะเบียน',
                                   style: TextStyle(
                                       fontSize: 20, color: Colors.white))
                             ],
