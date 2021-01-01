@@ -1,4 +1,4 @@
-import 'package:firstFlutter/pages/last_version_page/menuWithOutRedux.dart';
+import 'package:firstFlutter/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 

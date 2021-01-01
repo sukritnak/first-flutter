@@ -32,7 +32,6 @@ class _HomePageState extends State<HomePage> {
         .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
   }
 
-
   _getProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var profileString = prefs.getString('profile');
@@ -128,20 +127,26 @@ class _HomePageState extends State<HomePage> {
                             ),
                             color: Colors.white70,
                           )),
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.map,
-                              size: 50,
-                              color: Colors.cyan[700],
-                            ),
-                            Text('แผนที่', style: TextStyle(fontSize: 20))
-                          ],
+                      GestureDetector(
+                        onTap: () async {
+                          Navigator.of(context, rootNavigator: true)
+                              .pushNamed('/map');
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.map,
+                                size: 50,
+                                color: Colors.cyan[700],
+                              ),
+                              Text('แผนที่', style: TextStyle(fontSize: 20))
+                            ],
+                          ),
+                          color: Colors.white70,
                         ),
-                        color: Colors.white70,
                       ),
                       GestureDetector(
                           onTap: () async {

@@ -1,6 +1,7 @@
 import 'package:firstFlutter/pages/BarcodePage.dart';
 import 'package:firstFlutter/pages/CustomerPage.dart';
 import 'package:firstFlutter/pages/LoginPage.dart';
+import 'package:firstFlutter/pages/MapPage.dart';
 import 'package:firstFlutter/pages/RegisterPage.dart';
 import 'package:firstFlutter/pages/stacks/CameraStack.dart';
 import 'package:firstFlutter/pages/stacks/HomeStack.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
             '/customer': (context) => CustomerPage(),
             '/camerastack': (context) => CameraStack(),
             '/barcode': (context) => BarcodePage(),
+            '/map': (context) => MapPage(),
           },
           // routes: <String, WidgetBuilder>{
           //   '/': (context) => HomePage(),
