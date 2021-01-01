@@ -182,6 +182,7 @@ class _CustomerPageState extends State<CustomerPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text('ลูกค้า'),
+          // automaticallyImplyLeading: false,
           actions: [
             IconButton(
                 icon: Icon(Icons.person_add),

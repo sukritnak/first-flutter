@@ -1,3 +1,4 @@
+import 'package:firstFlutter/pages/BarcodePage.dart';
 import 'package:firstFlutter/pages/CustomerPage.dart';
 import 'package:firstFlutter/pages/LoginPage.dart';
 import 'package:firstFlutter/pages/RegisterPage.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
             '/newsstack': (context) => NewsStack(),
             '/customer': (context) => CustomerPage(),
             '/camerastack': (context) => CameraStack(),
+            '/barcode': (context) => BarcodePage(),
           },
           // routes: <String, WidgetBuilder>{
           //   '/': (context) => HomePage(),

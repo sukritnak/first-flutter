@@ -1,7 +1,9 @@
 import 'package:firstFlutter/redux/appReducer.dart';
+// import 'package:firstFlutter/redux/profile/profileAction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'dart:convert' as convert;
 // import 'dart:convert' as convert;
 
 class Menu extends StatefulWidget {
@@ -15,22 +17,28 @@ class _MenuState extends State<Menu> {
   // เปลี่ยนไปใช้ state
   // Map<String, dynamic> profile = {'email': '', 'name': '', 'role': ''};
 
-  _getProfile() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var profileString = prefs.getString('profile');
-    if (profileString != null) {
-      // เปลี่ยนไปใช้ state
-      // setState(() {
-      //   profile = convert.jsonDecode(profileString);
-      // });
-    }
-  }
+// ไปทำที่ home
+  // _getProfile() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   var profileString = prefs.getString('profile');
+  //   if (profileString != null) {
+  //     // เปลี่ยนไปใช้ state
+  //     // setState(() {
+  //     //   profile = convert.jsonDecode(profileString);
+  //     // });
 
-  @override
-  void initState() {
-    super.initState();
-    _getProfile();
-  }
+  //     // เรียก action
+  //     // call action set redux
+  //     final store = StoreProvider.of<AppState>(context);
+  //     store.dispatch(getProfileAction(convert.jsonDecode(profileString)));
+  //   }
+  // }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // _getProfile();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +112,18 @@ class _MenuState extends State<Menu> {
                   Navigator.of(context, rootNavigator: true)
                       .pushNamedAndRemoveUntil(
                           '/newsstack', (Route<dynamic> route) => false);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.qr_code),
+                title: Text('Barcode/QRCode'),
+                selected: ModalRoute.of(context).settings.name == '/barcode'
+                    ? true
+                    : false,
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true)
+                      .pushNamedAndRemoveUntil(
+                          '/barcode', (Route<dynamic> route) => false);
                 },
               ),
               ListTile(

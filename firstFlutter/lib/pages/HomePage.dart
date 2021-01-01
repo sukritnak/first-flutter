@@ -1,10 +1,12 @@
 import 'package:firstFlutter/redux/appReducer.dart';
+import 'package:firstFlutter/redux/profile/profileAction.dart';
 import 'package:firstFlutter/redux/profile/profileReducer.dart';
 import 'package:firstFlutter/widgets/logo.dart';
 import 'package:firstFlutter/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -28,6 +30,29 @@ class _HomePageState extends State<HomePage> {
 
     Navigator.of(context, rootNavigator: true)
         .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+  }
+
+
+  _getProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var profileString = prefs.getString('profile');
+    if (profileString != null) {
+      // เปลี่ยนไปใช้ state
+      // setState(() {
+      //   profile = convert.jsonDecode(profileString);
+      // });
+
+      // เรียก action
+      // call action set redux
+      final store = StoreProvider.of<AppState>(context);
+      store.dispatch(getProfileAction(convert.jsonDecode(profileString)));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getProfile();
   }
 
   @override
