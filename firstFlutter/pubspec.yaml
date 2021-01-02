@@ -45,7 +45,8 @@ dependencies:
   barcode_scan: ^3.0.1
   google_maps_flutter: ^1.0.6
   url_launcher: ^5.7.10
-  
+  onesignal_flutter: ^2.4.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
