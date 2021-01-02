@@ -1,0 +1,5 @@
+version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+options: "fcc3b91f15dff262a3b61ccb3f165471"
+build_time: [1609567457, 244269000]
+inputs:
+  "/Users/sukritnakpanom/Documents/practice/flutter-practice/firstFlutter/ios/OneSignalNotificationServiceExtension/NotificationService.swift": [1609567119, 882859636]
