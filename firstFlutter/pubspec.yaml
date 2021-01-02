@@ -46,10 +46,19 @@ dependencies:
   google_maps_flutter: ^1.0.6
   url_launcher: ^5.7.10
   onesignal_flutter: ^2.4.1
+  flutter_launcher_icons: ^0.7.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  #  image_path: "assets/images/icon-128x128.png"
+  image_path_android: "assets/images/icon.png"
+  image_path_ios: "assets/images/icon.png"
+  android: true # can specify file name here e.g. "ic_launcher"
+  # ios: true # can specify file name here e.g. "My-Launcher-Icon"
+  ios: false # can specify file name here e.g. "My-Launcher-Icon"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
